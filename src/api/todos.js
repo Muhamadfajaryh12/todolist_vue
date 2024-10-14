@@ -23,9 +23,31 @@ const TodosAPI = (() => {
       console.log(error)
     }
   }
+
+  const UpdateTodos = async id => {
+    try {
+      const response = await axios.put(`${base_url}/${id}`)
+      console.log(response)
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const DeleteTodos = async id => {
+    try {
+      const response = await axios.delete(`${base_url}/${id}`)
+      console.log(response)
+      return response
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return {
     GetTodos,
     PostTodos,
+    UpdateTodos,
+    DeleteTodos,
   }
 })()
 

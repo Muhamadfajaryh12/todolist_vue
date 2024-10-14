@@ -17,7 +17,22 @@ const fetchTodo = () => {
 
 const submitTodo = async title => {
   const response = await TodosAPI.PostTodos(title)
-  console.log(response)
+  todos.value.push(response.data.data[0])
+}
+
+const updateTodo = async id => {
+  const response = await TodosAPI.UpdateTodos(id)
+  const index = todos.value.findIndex(
+    item => item.id == response.data.data[0].id,
+  )
+  if (index !== -1) {
+    todos.value[index] = response.data.data[0]
+  }
+}
+
+const deleteTodo = async id => {
+  const response = await TodosAPI.DeleteTodos(id)
+  todos.value = todos.value.filter(item => item.id != response.data.data)
 }
 
 onMounted(() => {
@@ -34,7 +49,13 @@ onMounted(() => {
         :type="`text`"
         :handleSubmit="submitTodo"
       />
-      <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo" />
+      <TodoItem
+        v-for="todo in todos"
+        :key="todo.id"
+        :todo="todo"
+        :handleUpdate="updateTodo"
+        :handleDelete="deleteTodo"
+      />
     </div>
   </main>
 </template>
